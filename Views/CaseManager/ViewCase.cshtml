@@ -1,0 +1,90 @@
+﻿@model List<CriminalRecord>
+
+
+
+
+
+<h2>Cases Managed by Case Manager</h2>
+
+@if (Model.Any())
+{
+    <table id="casesData" class="table">
+        <thead>
+            <tr>
+                <th>Record ID</th>
+                <th>Suspect Number</th>
+                <th>Offence</th>
+                <th>Sentence</th>
+                <th>Issued At</th>
+                <th>Issued By</th>
+                <th>Date Issued</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        @* <tbody>
+            @foreach (var criminalRecord in Model)
+            {
+                <tr>
+                    <td>@criminalRecord.RecordId</td>
+                    <td>@criminalRecord.Suspect?.SuspectNo</td>
+                    <td>@criminalRecord.OffenceCommited</td>
+                    <td>@criminalRecord.Sentence</td>
+                    <td>@criminalRecord.IssuedAt</td>
+                    <td>@criminalRecord.IssuedBy</td>
+                    <td>@criminalRecord.IssueDate.ToString("yyyy/MM/dd")</td>
+                    <td style="background-color: @(GetStatusColor(criminalRecord.Status))">@criminalRecord.Status</td>
+                    <td><a asp-controller="CaseManager" asp-action="Edit" asp-route-RecordId="@criminalRecord.RecordId"><i class="bi bi-pencil-square">Edit</i></a></td>
+                </tr>
+            }
+        </tbody> *@
+        
+    </table>
+    
+    
+}
+else
+{
+    <p>No cases found for the selected Case Manager.</p>
+}
+
+<div class="row mt-4 justify-content-center">
+    <a asp-controller="CaseManager" asp-action="Index" class="btn btn-secondary border" style="width:150px">Back</a>
+</div>
+
+@section Scripts {
+    <script src="~/js/Cases.js" defer></script>
+}
+
+@* @functions {
+    public string GetStatusColor(string status)
+    {
+        switch (status)
+        {
+            case "In Progress":
+                return "#ffa07a"; // Light Salmon
+            case "Completed":
+                return "#98fb98"; // Pale Green
+            case "Acknowledged":
+                return "#add8e6"; // Light Blue
+            default:
+                return "transparent"; // Default color or adjust as needed
+        }
+    }
+} *@
+
+<script>
+    function getStatusColor(status) {
+        switch (status) {
+            case "In Progress":
+                return "#ffa07a"; // Light Salmon
+            case "Completed":
+                return "#98fb98"; // Pale Green
+            case "Acknowledged":
+                return "#add8e6"; // Light Blue
+            default:
+                return "transparent"; // Default color or adjust as needed
+        }
+    }
+</script>
+

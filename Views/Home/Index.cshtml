@@ -1,0 +1,234 @@
+﻿@using CrimeManagement.Data
+@inject SignInManager<ApplicationUser> signInManager
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model List<Combined>
+@if (signInManager.IsSignedIn(User)){
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-4 col-md-6" style="border-right: 2px solid #000;">
+            <!-- Search Bar -->
+            <form asp-action="Index" method="get">
+                <label for="suspectId">Suspect ID:</label>
+                <input type="text"  name="suspectId" />
+                <button type="submit">Search</button>
+            </form>
+
+            <!-- Form for Suspect Details -->
+            @if (Model.Any())
+            {
+                <form method="post" action="New" class="mt-5">
+                    @foreach (var suspect in Model)
+                    {
+                        <div class="row mb-3">
+                            <label asp-for="@suspect.Suspect.SuspectNo" class="col-sm-4 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <input asp-for="@suspect.Suspect.SuspectNo" readonly class="form-control">
+                                <span asp-validation-for="@suspect.Suspect.SuspectNo" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label asp-for="@suspect.Suspect.SuspectId" class="col-sm-4 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <input asp-for="@suspect.Suspect.SuspectId" readonly class="form-control">
+                                <span asp-validation-for="@suspect.Suspect.SuspectId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label asp-for="@suspect.Suspect.FirstName" class="col-sm-4 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <input asp-for="@suspect.Suspect.FirstName" readonly class="form-control">
+                                <span asp-validation-for="@suspect.Suspect.FirstName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label asp-for="@suspect.Suspect.LastName" class="col-sm-4 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <input asp-for="@suspect.Suspect.LastName" readonly class="form-control">
+                                <span asp-validation-for="@suspect.Suspect.LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <td><a asp-controller="Suspect" asp-action="Edit" asp-route-suspectNo="@suspect.Suspect.SuspectNo"><i class="bi bi-pencil-square">Edit</i></a></td>
+                        </div>
+                    }
+                    
+                </form>
+            }
+        </div>
+
+        <div class="col-lg-8 col-md-6">
+            @if (Model.Any())
+            {
+                <div class="row justify-content-center">
+                    <h1>Criminal Records</h1>
+                </div>
+
+                <div class="table-responsive">
+                        <table id="casesData" class="table">
+                        <thead>
+                            <tr>
+                                <th>Record ID</th>
+                                <th>Suspect Number</th>
+                                <th>Offence</th>
+                                <th>Sentence</th>
+                                <th>Issued At</th>
+                                <th>Issued By</th>
+                                <th>Date Issued</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                            <tbody>
+                                @foreach (var criminalRecord in Model)
+                                {
+                                    @foreach (var record in criminalRecord.CriminalRecords)
+                                    {
+                                        <tr>
+                                            <td>@record.RecordId</td>
+                                            <td>@criminalRecord.Suspect.SuspectNo</td>
+                                            <td>@record.OffenceCommited</td>
+                                            <td>@record.Sentence</td>
+                                            <td>@record.IssuedAt</td>
+                                            <td>@record.IssuedBy</td>
+                                            <td>@record.IssueDate.ToString("yyyy/MM/dd")</td>
+                                            <td><a asp-controller="CriminalRecord" asp-action="Edit" asp-route-RecordId="@record.RecordId"><i class="bi bi-pencil-square"></i></a></td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                    </table>
+                    @if (Model.Any())
+                    {
+                        <a asp-controller="CriminalRecord" asp-action="New" asp-route-suspectNo="@Model.First().Suspect.SuspectNo" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> New Criminal Record
+                        </a>
+                    }
+                    
+                </div>
+            }
+            //Display "No records found" message
+            else if (!string.IsNullOrEmpty(Context.Request.Query["suspectId"]))
+            {
+                
+                <p>No records found for Suspect ID: @Context.Request.Query["suspectId"]</p>
+            }
+        </div>
+    </div>
+    </div>
+}
+else
+{
+    <h1 class="text-center">Welcome to City of Joburg</h1>
+    <partial name="_LoginPartial.cshtml" />
+}
+
+@* @model List<Combined>
+
+@if (Model != null)
+{
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4 col-md-6" style="border-right: 2px solid #000;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <form class="d-flex" asp-action="Index" asp-controller="Home">
+                            <input class="form-control me-2" type="search" name="suspectId" placeholder="Search by ID" aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                    </div>
+                </div>
+
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" name="suspectId" placeholder="Search by ID" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+                <form method="post" action="New" class="mt-5">
+                    @foreach (var suspect in Model)
+                    {
+                        <div class="row mb-3">
+                            <label asp-for="@suspect.Suspect.SuspectNo" class="col-sm-4 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <input asp-for="@suspect.Suspect.SuspectNo" readonly class="form-control">
+                                <span asp-validation-for="@suspect.Suspect.SuspectNo" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label asp-for="@suspect.Suspect.SuspectId" class="col-sm-4 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <input asp-for="@suspect.Suspect.SuspectId" readonly class="form-control">
+                                <span asp-validation-for="@suspect.Suspect.SuspectId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label asp-for="@suspect.Suspect.FirstName" class="col-sm-4 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <input asp-for="@suspect.Suspect.FirstName" readonly class="form-control">
+                                <span asp-validation-for="@suspect.Suspect.FirstName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label asp-for="@suspect.Suspect.LastName" class="col-sm-4 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <input asp-for="@suspect.Suspect.LastName" readonly class="form-control">
+                                <span asp-validation-for="@suspect.Suspect.LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <td><a href="Home/View/@suspect.Suspect.SuspectNo"><i class="bi bi-pencil-square"></i></a></td>
+                        </div>
+
+                    }
+                </form>
+            </div>
+
+            <div class="col-lg-8 col-md-6">
+
+                <h1 class="row justify-content-center">Criminal Records</h1>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Record ID</th>
+                                <th>Suspect Number</th>
+                                <th>Offence</th>
+                                <th>Sentence</th>
+                                <th>Issued At</th>
+                                <th>Issued By</th>
+                                <th>Date Issued</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var criminalRecord in Model)
+                            {
+                                <tr>
+                                    <td>@criminalRecord.CriminalRecord.RecordId</td>
+                                    <td>@criminalRecord.Suspect.SuspectNo</td>
+                                    <td>@criminalRecord.CriminalRecord.OffenceCommited</td>
+                                    <td>@criminalRecord.CriminalRecord.Sentence</td>
+                                    <td>@criminalRecord.CriminalRecord.IssuedAt</td>
+                                    <td>@criminalRecord.CriminalRecord.IssuedBy</td>
+                                    <td>@criminalRecord.CriminalRecord.IssueDate.ToString("yyyy/MM/dd")</td>
+                                    <td><a href="Home/View/@criminalRecord.Suspect.SuspectNo"><i class="bi bi-pencil-square"></i></a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <a asp-controller="Category" asp-action="Create" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> New Criminal Record
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p></p>
+} *@

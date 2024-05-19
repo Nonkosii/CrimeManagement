@@ -1,0 +1,81 @@
+﻿@model CriminalRecord
+
+<h1 class="row justify-content-center">New Criminal Record</h1>
+
+
+
+
+<form method="post" action="New" class="mt-5">
+    <input type="hidden" asp-for="SuspectNo" />
+    <div class="row mb-3">
+        <label asp-for="OffenceCommited" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <select asp-for="OffenceCommited" class="form-select" placeholder="Select Criminal Offence">
+                <option value="">Select Criminal Offence</option>
+                <option value="Assault">Assault</option>
+                <option value="Burglary">Burglary</option>
+                <option value="Drugs">Drugs</option>
+                <option value="Hijacking">Hijacking</option>
+                <option value="Offences Of Dishonesty">Offences Of Dishonesty</option>
+                <option value="Other Offences">Other Offences</option>
+                <option value="Public Drinking">Public Drinking</option>
+                <option value="Rape">Rape</option>
+                <option value="Robbery">Robbery</option>
+                <option value="Sexual Harrassment">Sexual Harrassment</option>
+                <option value="Sexual Offences">Sexual Offences</option>
+                <option value="Violence">Violence</option>
+
+            </select>
+            <span asp-validation-for="OffenceCommited" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label asp-for="Sentence" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="Sentence" type="text" class="form-control" placeholder="Sentence in Years">
+            <span asp-validation-for="Sentence" class="text-danger"></span>
+        </div>
+
+    </div>
+
+    <div class="row mb-3">
+        <label asp-for="IssuedAt" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="IssuedAt" class="form-control" placeholder="Issued At">
+            <span asp-validation-for="IssuedAt" class="text-danger"></span>
+        </div>
+
+    </div>
+
+    <div class="row mb-3">
+        <label asp-for="IssuedBy" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="IssuedBy" class="form-control" placeholder="Issued By">
+            <span asp-validation-for="IssuedBy" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label asp-for="IssueDate" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="IssueDate" disabled class="form-control" placeholder="">
+            @* <span asp-validation-for="IssueDate" class="text-danger"></span> *@
+        </div>
+    </div>
+
+    <div class="text-center col-12">
+
+        @* <a asp-controller="Home" asp-action="Index" class="btn btn-secondary me-2">Back</a> *@
+        @* <button type="button" class="btn btn-secondary me-2" onclick="goBack()">Back</button> *@
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+
+

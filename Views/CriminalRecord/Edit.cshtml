@@ -1,0 +1,81 @@
+﻿@model CriminalRecord
+
+<h2 class="text-center">Edit Criminal Record</h2>
+<div class="container-fluid">
+    <div class="row">
+        <form method="post" class="mt-5" action="@Url.Action("Edit", "CriminalRecord")">
+            <input type="hidden" name="returnUrl" value="@Context.Request.Headers["Referer"]" />
+            <input asp-for="RecordId" hidden />
+            <input asp-for="CaseManagerId" hidden />
+            <input asp-for="SuspectNo" hidden />
+
+            <div class="row mb-3">
+                <label asp-for="OffenceCommited" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <select asp-for="OffenceCommited" class="form-select" placeholder="Select Criminal Offence">
+                        <option value="">Select Criminal Offence</option>
+                        <option value="Assault">Assault</option>
+                        <option value="Burglary">Burglary</option>
+                        <option value="Drugs">Drugs</option>
+                        <option value="Hijacking">Hijacking</option>
+                        <option value="Offences Of Dishonesty">Offences Of Dishonesty</option>
+                        <option value="Other Offences">Other Offences</option>
+                        <option value="Public Drinking">Public Drinking</option>
+                        <option value="Rape">Rape</option>
+                        <option value="Robbery">Robbery</option>
+                        <option value="Sexual Harrassment">Sexual Harrassment</option>
+                        <option value="Sexual Offences">Sexual Offences</option>
+                        <option value="Violence">Violence</option>
+
+                    </select>
+                    <span asp-validation-for="OffenceCommited" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="Sentence" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="Sentence" class="form-control">
+                    <span asp-validation-for="Sentence" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="IssuedAt" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="IssuedAt" class="form-control">
+                    <span asp-validation-for="IssuedAt" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="IssuedBy" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="IssuedBy" class="form-control">
+                    <span asp-validation-for="IssuedBy" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="IssueDate" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="IssueDate" disabled class="form-control">
+                    @* <span asp-validation-for="IssueDate" class="text-danger"></span> *@
+                </div>
+            </div>
+
+            <div class="row mt-3 justify-content-center">
+                <button type="submit" class="btn btn-primary mr-2" style="width:150px">Update</button>
+                @* <a asp-controller="Home" asp-action="Index" class="btn btn-secondary border" style="width:150px">Back</a> *@
+                <a href="@Context.Request.Headers["Referer"]" class="btn btn-secondary border" style="width:150px">Back</a>
+                @* <button type="button" class="btn btn-secondary border" style="width:150px" onclick="goBack()">Back</button> *@
+            </div>
+
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+
